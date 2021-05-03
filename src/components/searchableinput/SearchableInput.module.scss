@@ -4,7 +4,7 @@
   margin: 16px 0;
 
   .search_form {
-    width: 600px;
+    width: 450px;
     display: flex;
     position: relative;
 
@@ -67,7 +67,7 @@
 
     .search_suggestions {
       position: absolute;
-      max-height: 300px;
+      max-height: 2050px;
       width: 100%;
       background: #f2f2f2;
       top: 46px;
@@ -75,9 +75,17 @@
       border-bottom-left-radius: 4px;
       border-bottom-right-radius: 4px;
 
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        padding: 20px 40px;
+      }
+
       .search_suggestions_content {
         display: flex;
-        padding: 4px 16px;
+        //padding: 4px 16px;
         width: 100%;
 
         ul {
@@ -87,7 +95,24 @@
           padding: 0;
 
           li {
-            padding: 6px 0;
+            padding: 10px 16px;
+
+            &:hover {
+              cursor: pointer;
+              background-color: rgb(150, 172, 252);
+            }
+
+            :first-child {
+              font-size: 22px;
+            }
+
+            :nth-child(2) {
+              margin: 0 6px 6px;
+            }
+
+            :nth-child(3), :nth-child(4) {
+              font-size: 14px;
+            }
           }
         }
       }

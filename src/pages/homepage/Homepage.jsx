@@ -1,57 +1,40 @@
-import React, { useEffect, useState, useCallback} from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useFetch, queryUrl } from '../../utils/useFetch';
 
 import SearchableInput from '../../components/searchableinput/SearchableInput';
 
 import styles from './Homepage.module.scss';
 
 const HomePage = () => {
-  const navigate = useNavigate();
-  const [cities, setCities] = useState([]);
   const [queryString, setQueryString] = useState('');
-
-  const handleOnSubmit = (text) => navigate(text);
-
-  const fetchData = useCallback(async () => {
-    const url = `http://api.openweathermap.org/data/2.5/find?q=${queryString}&APPID=b70737776bd3ea36b08580bdf70dc26d`
-  
-    await fetch(url)
-        .then((response) => {
-          console.log(response)
-          if (response.status === 200 )
-            return response.json()
-          
-          throw new Error('erro')
-        })
-        .then((data) => setCities(data.list))
-        .catch(console.error)
-  }, [queryString]);
-
-  useEffect(() => {
-    if (queryString !== '') {
-      fetchData();
-    }
-  }, [queryString])
-
-  const handleTextChange = (text) => {
-    setQueryString(text)
-  }
-
-  const handleOnClickCell = (id) => navigate(`/city/${id}`);
+  const navigate = useNavigate();
+  const url = queryUrl(queryString);
+  const { data, isLoading, error } = useFetch(url);
 
   return (
-    <div>
-      <div>
+    <div className={styles.container}>
+      <div className={styles.title}>
         Weather Forecast
       </div>
       <SearchableInput
         placeholder='Enter a city'
-        onTextChange={handleTextChange}
-        results={cities}
-        onSubmit={handleOnSubmit}
-        onClickCell={handleOnClickCell}
-        clearSearchQuery={() => setCities('')}
+        onTextChange={setQueryString}
+        results={data?.list}
+        onSubmit={null}
+        onClickCell={(id) => navigate(`/city/${id}`)}
+        clearSearchQuery={() => setQueryString('')}
+        isLoading={isLoading}
+        error={error}
       />
+      <div className={styles.description}>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make 
+        a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, 
+        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing 
+        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker 
+        including versions of Lorem Ipsum.
+      </div>
     </div>
   );
 }

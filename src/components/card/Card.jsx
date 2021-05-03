@@ -11,7 +11,7 @@ const Card = ({
   icon,
   onClick,
 }) => {
-  const date = DateTime.fromSeconds(dt)
+  const date = DateTime.fromSeconds(dt);
 
   return (
     <div className={styles.container}>
@@ -30,9 +30,6 @@ const Card = ({
         </div>
         <div className={styles.description}>
           {description}
-        </div>
-        <div className={styles.something}>
-          0%
         </div>
       </div>
     </div>

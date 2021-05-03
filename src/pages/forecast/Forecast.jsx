@@ -1,8 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useFetch } from '../../utils/useFetch';
-import { findByIdUrl } from '../../utils/generateUrl';
-
+import { useFetch, findByIdUrl } from '../../utils/useFetch';
 
 import Card from '../../components/card/Card';
 import ReactCountryFlag from "react-country-flag";
@@ -13,7 +11,7 @@ import styles from './Forecast.module.scss';
 const Forecast = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const url = findByIdUrl(id)
+  const url = findByIdUrl(id);
 
   const { data, error, isLoading } = useFetch(url);
 

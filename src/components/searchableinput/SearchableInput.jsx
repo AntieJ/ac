@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { debounce } from 'lodash';
+import React, { useState } from 'react';
 import ReactCountryFlag from "react-country-flag";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import styles from './SearchableInput.module.scss';
 
@@ -10,7 +10,9 @@ const SearchableInput = ({
   results,
   onClickCell,
   onTextChange,
-  clearSearchQuery
+  clearSearchQuery,
+  isLoading,
+  error
 }) => {
   const [value, setValue] = useState('');
 
@@ -29,6 +31,42 @@ const SearchableInput = ({
   const clearQueryString = () => {
     setValue('');
     clearSearchQuery();
+  }
+
+  const queryResults = () => {
+    if (isLoading) {
+      return (
+        <div className={styles.loading}>
+          <ClipLoader size={50} />
+        </div> 
+      )
+    }
+
+    if (error) {
+      return (
+        <div>No data</div>
+      )
+    }
+    
+    return (
+      <ul>
+        {results?.map((result) => (
+          <li
+            className={styles.list}
+            key={result.id}
+            onClick={() => onClickCell(result.id)}
+          >
+            <span>{result.name}, {result.sys.country}</span>
+            {' '} 
+            <ReactCountryFlag countryCode={result.sys.country} />
+            {' '}
+            <span>lat: {result.coord.lat}</span>
+            {' '}
+            <span>lon: {result.coord.lon}</span>
+          </li>
+        ))}
+      </ul>
+    )
   }
 
   return (
@@ -54,28 +92,11 @@ const SearchableInput = ({
           value="X"
           onClick={clearQueryString}
         />
-        {results?.length > 0 && (
-          <div className={styles.search_suggestions}>
-            <div className={styles.search_suggestions_content}>
-              <ul>
-                {results.map((result) => (
-                    <li
-                      key={result.id}
-                      onClick={() => onClickCell(result.id)}
-                    >
-                      {result.name},
-                      {' '}
-                      {result.sys.country}
-                      {' '} 
-                      <ReactCountryFlag countryCode={result.sys.country} />
-                      {' '}
-                      {result.coord.lat} {result.coord.lon}
-                    </li>
-                ))}
-              </ul>
-            </div>
+        <div className={styles.search_suggestions}>
+          <div className={styles.search_suggestions_content}>
+            {queryResults()}
           </div>
-        )}
+        </div>
       </form>
     </div>
   );
