@@ -9,7 +9,7 @@ A scientific yet simple approach to weather forecast.
   - Go to Account > My Api Keys > Generate Api keys
   - Copy the generated key 
 
-2. Create a file `.env` in the root of the project and past the generated key
+2. Create a file `.env` in the root of the project and paste the generated key
 
 ```
 REACT_APP_OPEN_WEATHER_API_KEY=<<YOUR API KEY>>
